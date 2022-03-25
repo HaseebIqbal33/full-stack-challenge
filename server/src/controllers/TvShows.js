@@ -1,22 +1,19 @@
-const csvParser = require("csv-parser");
 const fs = require("fs");
-const byline = require("byline");
+const path = require('path')
+const csv = require('fast-csv')
+
 
 const getShows = async (req, res, next) => {
-  //const shows = [];
-  const stream = byline(
-    fs
-      .createReadStream(require("../../assets/tv_shows.csv"), {
-        encoding: "utf8",
-      })
-      .pipe(csvParser())
-  );
-  stream.on("data", function (line) {
-    console.log(line);
-  });
-  return res.status(200).json({
-    message: req.params?.search,
-  });
+  const dataPath = path.resolve(__dirname, '../../assets/tv_shows.csv')
+  
+  csv
+ .parseStream( fs.createReadStream(dataPath), {headers : true , coding:"utf8"})
+ .on("data", function(data){
+     console.log('I am one line of data', data);
+ })
+ .on("end", function(){
+     console.log("done");
+ });
 };
 
 module.exports = { getShows };
