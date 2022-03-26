@@ -47,7 +47,7 @@ const getShows = async (req, res, next) => {
                 : show.Hulu === "1"
                 ? "Hulu"
                 : show["Prime Video"] === "1"
-                ? "Prime Vide"
+                ? "Prime Video"
                 : "Disney+",
             Age: show.Age,
           },
@@ -56,6 +56,10 @@ const getShows = async (req, res, next) => {
         res.status(200).json({
           search: params,
           data: showAge,
+        });
+      } else {
+        res.status(200).json({
+          message: "No Data Found",
         });
       }
     });
